@@ -1,0 +1,114 @@
+
+[
+  {
+    "id": "fw-oilyacne-100",
+    "name": "Face Wash",
+    "subtitle": "For Oily & Acne-Prone Skin",
+    "description": "Advanced formula with natural ingredients to cleanse, remove excess oil, and prevent breakouts while maintaining your skin's natural moisture balance.",
+    "price": 28.99,
+    "discountPrice": 24.99,
+    "volume": "100 mL",
+    "stock": 150,
+    "images": [
+      "/lovable-uploads/69eb0f8e-9162-4226-bec2-8196b910a7eb.png"
+    ],
+    "ingredients": [
+      "Salicylic Acid",
+      "Tea Tree Oil",
+      "Aloe Vera",
+      "Witch Hazel",
+      "Green Tea Extract",
+      "Glycerin",
+      "Zinc PCA"
+    ],
+    "advantages": [
+      "Oil Control",
+      "Reduces Acne",
+      "Unclogs Pores",
+      "Anti-inflammatory",
+      "No Harsh Chemicals",
+      "pH Balanced"
+    ],
+    "skinType": ["Oily", "Combination", "Acne-Prone"],
+    "uses": [
+      "Morning and evening facial cleansing",
+      "Post-workout refreshing",
+      "Pre-shave preparation",
+      "Spot treatment for occasional breakouts"
+    ]
+  },
+  {
+    "id": "fw-sensitive-100",
+    "name": "Face Wash",
+    "subtitle": "For Sensitive Skin",
+    "description": "Gentle, fragrance-free formula that cleanses without stripping your skin's natural oils. Perfect for men with sensitive skin who need effective yet mild cleansing.",
+    "price": 26.99,
+    "discountPrice": 22.99,
+    "volume": "100 mL",
+    "stock": 120,
+    "images": [
+      "/lovable-uploads/69eb0f8e-9162-4226-bec2-8196b910a7eb.png"
+    ],
+    "ingredients": [
+      "Chamomile Extract",
+      "Aloe Vera",
+      "Cucumber Extract",
+      "Glycerin",
+      "Oat Kernel Extract",
+      "Panthenol",
+      "Allantoin"
+    ],
+    "advantages": [
+      "Soothes Irritation",
+      "Gentle Cleansing",
+      "Fragrance-Free",
+      "Hydrating",
+      "Non-Comedogenic",
+      "Dermatologist Tested"
+    ],
+    "skinType": ["Sensitive", "Dry", "Normal"],
+    "uses": [
+      "Daily facial cleansing",
+      "After sun exposure",
+      "Post-shaving care",
+      "Redness reduction"
+    ]
+  },
+  {
+    "id": "fw-hydrating-100",
+    "name": "Face Wash",
+    "subtitle": "Hydrating Formula",
+    "description": "Rich, moisturizing face wash that cleanses while replenishing essential hydration. Ideal for men with dry or mature skin who need extra nourishment during cleansing.",
+    "price": 29.99,
+    "discountPrice": 25.99,
+    "volume": "100 mL",
+    "stock": 85,
+    "images": [
+      "/lovable-uploads/69eb0f8e-9162-4226-bec2-8196b910a7eb.png"
+    ],
+    "ingredients": [
+      "Hyaluronic Acid",
+      "Glycerin",
+      "Ceramides",
+      "Vitamin E",
+      "Jojoba Oil",
+      "Shea Butter",
+      "Squalane"
+    ],
+    "advantages": [
+      "Deep Hydration",
+      "Prevents Dryness",
+      "Anti-Aging Benefits",
+      "Strengthens Skin Barrier",
+      "Reduces Flakiness",
+      "Soothes Tightness"
+    ],
+    "skinType": ["Dry", "Mature", "Dehydrated", "Normal"],
+    "uses": [
+      "Daily facial cleansing",
+      "Winter skincare routine",
+      "Post-travel skin refreshment",
+      "After-shave care"
+    ]
+  }
+]
