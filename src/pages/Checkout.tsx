@@ -182,7 +182,7 @@ const Checkout = () => {
   const shippingCost = 0;
   const taxRate = 0.18; // GST 18%
   const tax = subtotal * taxRate;
-  const total = subtotal - discountAmount + shippingCost;
+  const total = Math.max(0, subtotal + tax + shippingCost - discountAmount);
 
   const handleApplyCoupon = async () => {
     setIsProcessingCoupon(true);
@@ -843,10 +843,10 @@ const Checkout = () => {
                             <p className="text-sm text-gray-500 mt-1">Payment ID: {paymentId}</p>
                             <div className="mt-6">
                               <Button
-                                onClick={() => navigate("/profile?tab=orders")}
+                                onClick={() => navigate("/")}
                                 className="bg-manscara-black text-white rounded-md hover:bg-gray-800 transition-colors"
                               >
-                                View Orders
+                                Continue Shopping
                               </Button>
                             </div>
                           </div>
