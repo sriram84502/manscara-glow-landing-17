@@ -2,7 +2,6 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { CartItem, Cart, CartResponse } from '@/services/cartService';
 import cartService from '@/services/cartService';
-import authService from '@/services/authService';
 import { useToast } from '@/hooks/use-toast';
 
 interface CartContextType {
@@ -24,32 +23,27 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { toast } = useToast();
   
-  // Fetch cart from API when component mounts if user is authenticated
+  // Fetch cart from API when component mounts
   useEffect(() => {
     async function fetchCart() {
-      if (authService.isAuthenticated()) {
-        setIsLoading(true);
-        try {
-          const response = await cartService.getCart();
-          setCart(response.data.items);
-        } catch (error: any) {
-          console.error('Failed to fetch cart:', error);
-          // If unauthorized, use an empty cart
-          if (error.status === 401) {
-            setCart([]);
-          } else {
-            toast({
-              title: 'Error',
-              description: 'Failed to load your cart. Please try again.',
-              variant: 'destructive',
-            });
-          }
-        } finally {
-          setIsLoading(false);
+      setIsLoading(true);
+      try {
+        const response = await cartService.getCart();
+        setCart(response.data.items);
+      } catch (error: any) {
+        console.error('Failed to fetch cart:', error);
+        // If unauthorized, use an empty cart
+        if (error.status === 401) {
+          setCart([]);
+        } else {
+          toast({
+            title: 'Error',
+            description: 'Failed to load your cart. Please try again.',
+            variant: 'destructive',
+          });
         }
-      } else {
-        // Use empty cart for non-authenticated users
-        setCart([]);
+      } finally {
+        setIsLoading(false);
       }
     }
 
@@ -57,19 +51,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, [toast]);
 
   const addToCart = async (product: { id: string, name: string, subtitle: string, price: number, quantity: number, image: string }) => {
-    if (!authService.isAuthenticated()) {
-      toast({
-        title: 'Authentication Required',
-        description: 'Please sign in to add items to your cart.',
-        variant: 'destructive',
-      });
-      return;
-    }
-
     setIsLoading(true);
     try {
       const response = await cartService.addToCart(product);
       setCart(response.data.items);
+      toast({
+        title: 'Success',
+        description: 'Item added to cart successfully.',
+      });
       return response;
     } catch (error: any) {
       console.error('Error adding to cart:', error);
@@ -84,8 +73,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
   };
 
   const updateQuantity = async (productId: string, quantity: number) => {
-    if (!authService.isAuthenticated()) return;
-
     setIsLoading(true);
     try {
       const response = await cartService.updateCartItem(productId, quantity);
@@ -103,8 +90,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
   };
 
   const removeFromCart = async (productId: string) => {
-    if (!authService.isAuthenticated()) return;
-
     setIsLoading(true);
     try {
       const response = await cartService.removeFromCart(productId);
@@ -122,8 +107,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
   };
   
   const clearCart = async () => {
-    if (!authService.isAuthenticated()) return;
-    
     setIsLoading(true);
     try {
       await cartService.clearCart();
