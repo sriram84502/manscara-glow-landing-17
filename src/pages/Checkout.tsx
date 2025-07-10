@@ -53,6 +53,7 @@ const shippingAddressSchema = z.object({
   phone: z.string().min(10, {
     message: "Phone number must be at least 10 characters.",
   }),
+  email: z.string().email("Please enter a valid email address"),
 });
 
 const emailSchema = z.object({
@@ -145,6 +146,7 @@ const Checkout = () => {
       postalCode: "",
       country: "India", // Default country set to India
       phone: "",
+      email: user?.email || "",
     },
   });
 
@@ -168,6 +170,7 @@ const Checkout = () => {
       postalCode: address.postalCode,
       country: address.country,
       phone: address.phone,
+      email: address.email,
     });
   };
 
@@ -236,6 +239,7 @@ const Checkout = () => {
       postalCode: values.postalCode,
       country: values.country,
       phone: values.phone,
+      email: values.email,
     };
     
     setShippingAddress(shippingData);
@@ -338,7 +342,7 @@ const Checkout = () => {
                 clearCart();
                 localStorage.removeItem('checkoutCouponData');
                 
-                navigate("/profile?tab=orders");
+                navigate("/");
                 
                 toast({
                   title: "Order placed",
@@ -646,6 +650,23 @@ const Checkout = () => {
                                   <FormControl>
                                     <Input
                                       placeholder="+91 9876543210"
+                                      {...field}
+                                      className="rounded-md"
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              control={shippingForm.control}
+                              name="email"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Email</FormLabel>
+                                  <FormControl>
+                                    <Input
+                                      placeholder="your@email.com"
                                       {...field}
                                       className="rounded-md"
                                     />

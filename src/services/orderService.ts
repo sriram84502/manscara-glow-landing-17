@@ -7,7 +7,7 @@ interface CreateOrderRequest {
   saveShippingAddress: boolean;
   couponCode?: string;
   paymentMethod: PaymentMethod;
-  customerEmail?: string; // Add email field for receipt
+  customerEmail?: string; // This will be used as fallback, but shippingAddress.email takes priority
   items?: any[];
   subtotal?: number;
   tax?: number;
@@ -41,8 +41,14 @@ export interface OrderDetailResponse extends OrderSummaryResponse {
 const orderService = {
   createOrder: async (orderData: CreateOrderRequest) => {
     try {
-      console.log('Creating order with customer email:', orderData.customerEmail);
-      const response = await api.post('/orders', orderData);
+      // Use email from shipping address if available, otherwise fall back to customerEmail
+      const emailToUse = orderData.shippingAddress.email || orderData.customerEmail;
+      console.log('Creating order with email:', emailToUse);
+      
+      const response = await api.post('/orders', {
+        ...orderData,
+        customerEmail: emailToUse
+      });
       return response.data;
     } catch (error) {
       console.error('Error creating order:', error);

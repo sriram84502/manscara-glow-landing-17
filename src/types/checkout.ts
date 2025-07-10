@@ -9,6 +9,7 @@ export interface ShippingAddress {
   postalCode: string; // Pin code
   country: string; // Default: India
   phone: string;
+  email: string; // Add email field for order confirmation
 }
 
 export interface BillingAddress {
