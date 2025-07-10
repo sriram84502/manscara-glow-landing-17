@@ -182,7 +182,7 @@ const Checkout = () => {
   const shippingCost = 0;
   const taxRate = 0.18; // GST 18%
   const tax = subtotal * taxRate;
-  const total = Math.max(0, subtotal + tax + shippingCost - discountAmount);
+  const total = Math.max(0, subtotal + shippingCost - discountAmount);
 
   const handleApplyCoupon = async () => {
     setIsProcessingCoupon(true);
