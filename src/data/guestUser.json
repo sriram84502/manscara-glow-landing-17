@@ -1,0 +1,22 @@
+
+{
+  "id": "686b77eeaa95adeb9ffd9aee",
+  "firstName": "Guest",
+  "lastName": "User",
+  "email": "guest@example.com",
+  "phone": "555-000-0000",
+  "profilePicture": "",
+  "addresses": [
+    {
+      "id": "addr_guest_1",
+      "name": "Default Address",
+      "street": "123 Guest Street",
+      "city": "San Francisco",
+      "state": "California",
+      "zipCode": "94105",
+      "country": "United States",
+      "phone": "555-000-0000",
+      "isPrimary": true
+    }
+  ]
+}
