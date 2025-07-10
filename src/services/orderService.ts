@@ -7,6 +7,12 @@ interface CreateOrderRequest {
   saveShippingAddress: boolean;
   couponCode?: string;
   paymentMethod: PaymentMethod;
+  customerEmail?: string; // Add email field for receipt
+  items?: any[];
+  subtotal?: number;
+  tax?: number;
+  total?: number;
+  discountAmount?: number;
 }
 
 interface OrderItem {
@@ -35,6 +41,7 @@ export interface OrderDetailResponse extends OrderSummaryResponse {
 const orderService = {
   createOrder: async (orderData: CreateOrderRequest) => {
     try {
+      console.log('Creating order with customer email:', orderData.customerEmail);
       const response = await api.post('/orders', orderData);
       return response.data;
     } catch (error) {

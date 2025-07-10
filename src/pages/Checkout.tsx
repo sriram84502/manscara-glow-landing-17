@@ -26,6 +26,7 @@ import { Separator } from "@/components/ui/separator";
 import { getSavedAddresses, saveAddress, saveUserAddress, savePaymentMethod, saveOrder, getSavedPaymentMethods } from "@/utils/addressUtils";
 import { createRazorpayPayment, formatAmountForRazorpay, RazorpayResponse } from "@/utils/razorpayUtils";
 import { AvailableCoupons } from "@/components/AvailableCoupons";
+import orderService from "@/services/orderService";
 
 const shippingAddressSchema = z.object({
   firstName: z.string().min(2, {
@@ -82,7 +83,6 @@ const Checkout = () => {
   const [shippingCompleted, setShippingCompleted] = useState(false);
   const [orderCompleted, setOrderCompleted] = useState(false);
 
-  // Same useEffects as before
   useEffect(() => {
     // Load user data
     const userData = localStorage.getItem("userData");
@@ -158,7 +158,6 @@ const Checkout = () => {
   const [shippingAddress, setShippingAddress] = useState<ShippingAddress | null>(null);
   const [order, setOrder] = useState<OrderSummary | null>(null);
 
-  // Fill form with saved address if available
   const fillFormWithSavedAddress = (address: ShippingAddress) => {
     shippingForm.reset({
       firstName: address.firstName,
@@ -177,11 +176,9 @@ const Checkout = () => {
   };
 
   const subtotal = calculateSubtotal();
-  // Changed shipping cost to always be 0 (free)
   const shippingCost = 0;
   const taxRate = 0.18; // GST 18%
   const tax = subtotal * taxRate;
-  // Updated total calculation to remove GST (tax) from the total
   const total = subtotal - discountAmount + shippingCost;
 
   const handleApplyCoupon = async () => {
@@ -195,7 +192,6 @@ const Checkout = () => {
         setAppliedCoupon(result.coupon);
         setDiscountAmount(discount);
         
-        // Save the coupon data for checkout
         const couponData = {
           appliedCoupon: result.coupon,
           discountAmount: discount
@@ -231,7 +227,6 @@ const Checkout = () => {
   };
 
   const handleShippingSubmit = (values: z.infer<typeof shippingAddressSchema>) => {
-    // Explicitly set all required fields to ensure type safety
     const shippingData: ShippingAddress = {
       firstName: values.firstName,
       lastName: values.lastName,
@@ -247,7 +242,6 @@ const Checkout = () => {
     setShippingCompleted(true);
     setActiveSection("order");
     
-    // Show save address dialog if this address isn't already saved
     const addressExists = savedAddresses.some(
       addr => addr.address === shippingData.address && 
               addr.postalCode === shippingData.postalCode
@@ -275,7 +269,6 @@ const Checkout = () => {
     setActiveSection("payment");
     
     if (shippingAddress) {
-      // Create order summary with updated total calculation
       const orderSummary: OrderSummary = {
         shippingAddress,
         billingAddress: null,
@@ -297,7 +290,6 @@ const Checkout = () => {
     setIsProcessingPayment(true);
     
     if (shippingAddress && order) {
-      // Set up Razorpay options
       createRazorpayPayment({
         amount: formatAmountForRazorpay(total),
         currency: "INR",
@@ -316,7 +308,6 @@ const Checkout = () => {
           setPaymentId(response.razorpay_payment_id);
           
           try {
-            // Create payment method object
             const paymentData: PaymentMethod = {
               nameOnCard: `${shippingAddress.firstName} ${shippingAddress.lastName}`,
               cardNumber: `razorpay_${response.razorpay_payment_id.slice(-4)}`,
@@ -325,24 +316,33 @@ const Checkout = () => {
               razorpayPaymentId: response.razorpay_payment_id
             };
             
-            // Update order with payment information
             if (order) {
               order.paymentMethod = paymentData;
               
-              // Save the order using our API integration
-              const orderResult = await saveOrder(order);
+              const orderData = {
+                shippingAddress,
+                saveShippingAddress: false,
+                couponCode: appliedCoupon?.code,
+                paymentMethod: paymentData,
+                customerEmail: values.email,
+                items,
+                subtotal,
+                tax,
+                total,
+                discountAmount
+              };
               
-              if (orderResult.success && orderResult.order) {
-                // Clear cart and coupon data
+              const orderResult = await orderService.createOrder(orderData);
+              
+              if (orderResult) {
                 clearCart();
                 localStorage.removeItem('checkoutCouponData');
                 
-                // Navigate to orders page
                 navigate("/profile?tab=orders");
                 
                 toast({
                   title: "Order placed",
-                  description: "Your order has been placed successfully."
+                  description: `Your order has been placed successfully. Receipt sent to ${values.email}.`
                 });
               } else {
                 toast({
@@ -396,7 +396,6 @@ const Checkout = () => {
             Manscara
           </Link>
 
-          {/* User Menu */}
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -480,7 +479,6 @@ const Checkout = () => {
           </Card>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Checkout Steps */}
             <div className="md:order-1">
               <Accordion
                 type="single"
@@ -632,7 +630,6 @@ const Checkout = () => {
                                 </FormItem>
                               )}
                             />
-                            {/* Hidden country field, defaults to India */}
                             <FormField
                               control={shippingForm.control}
                               name="country"
@@ -779,7 +776,6 @@ const Checkout = () => {
                                 </div>
                               )}
                               
-                              {/* Add the Available Coupons component */}
                               <div className="mt-6">
                                 <AvailableCoupons 
                                   onSelectCoupon={(code) => {
@@ -900,7 +896,6 @@ const Checkout = () => {
               </Accordion>
             </div>
 
-            {/* Order Summary (right side) */}
             <div className="md:order-2">
               <Card className="shadow-md sticky top-6">
                 <CardHeader>
@@ -989,7 +984,6 @@ const Checkout = () => {
         )}
       </div>
       
-      {/* Save Address Dialog */}
       <AlertDialog open={showSaveAddressDialog} onOpenChange={setShowSaveAddressDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
