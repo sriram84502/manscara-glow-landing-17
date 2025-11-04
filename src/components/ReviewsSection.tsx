@@ -147,49 +147,49 @@ const ReviewsSection = ({ className = "" }) => {
   return (
     <section id="reviews" className={`section-padding ${className}`}>
       <div className="container">
-        <div className="text-center mb-8">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Customer Reviews</h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
+        <div className="text-center mb-12 max-w-3xl mx-auto">
+          <h2 className="text-4xl md:text-5xl font-serif font-bold mb-6">Customer Reviews</h2>
+          <p className="text-muted-foreground text-lg leading-relaxed">
             See what our customers are saying about our products
           </p>
-          <div className="mt-6 mb-8">
+          <div className="mt-8 mb-10">
             <ReviewForm onReviewSubmitted={fetchReviews} />
           </div>
         </div>
         
-        <div className="mb-6 max-w-md mx-auto">
+        <div className="mb-8 max-w-lg mx-auto">
           <Input
             type="text"
             placeholder="Search reviews by name, product, or content..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full"
+            className="w-full h-12 px-4 rounded-lg shadow-sm"
           />
         </div>
         
         {reviewsToRender.length === 0 ? (
-          <div className="text-center py-10">
-            <p className="text-muted-foreground">No reviews found matching your search.</p>
+          <div className="text-center py-16 bg-muted/30 rounded-2xl">
+            <p className="text-muted-foreground text-lg">No reviews found matching your search.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {reviewsToRender.map((review) => (
-              <Card key={review._id} className="overflow-hidden h-full">
+              <Card key={review._id} className="overflow-hidden h-full hover-lift transition-all">
                 <CardContent className="p-6 flex flex-col h-full">
-                  <div className="mb-3">{renderStars(review.rating)}</div>
-                  <div className="mb-4 flex-grow">
-                    <p className="italic">"{review.comment}"</p>
+                  <div className="mb-4">{renderStars(review.rating)}</div>
+                  <div className="mb-6 flex-grow">
+                    <p className="italic text-base leading-relaxed">"{review.comment}"</p>
                   </div>
-                  <div className="mt-auto">
+                  <div className="mt-auto pt-4 border-t border-border">
                     <div>
-                      <p className="font-semibold">
+                      <p className="font-semibold text-base">
                         {review.user.firstName} {review.user.lastName}
                       </p>
-                      <div className="flex justify-between items-center mt-1">
+                      <div className="flex justify-between items-center mt-2">
                         <p className="text-xs text-muted-foreground">
                           {formatDate(review.createdAt)}
                         </p>
-                        <span className="bg-manscara-offwhite text-muted-foreground px-2 py-1 rounded-full text-xs">
+                        <span className="bg-secondary text-secondary-foreground px-3 py-1 rounded-full text-xs font-medium">
                           {getProductName(review.product)}
                         </span>
                       </div>

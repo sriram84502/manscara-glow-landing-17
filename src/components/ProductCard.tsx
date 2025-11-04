@@ -87,39 +87,40 @@ const ProductCard = ({ product, onSelectProduct }: ProductCardProps) => {
   
   return (
     <div 
-      className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition border border-gray-100 cursor-pointer"
+      className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all border border-gray-100 cursor-pointer group"
       onClick={() => onSelectProduct(product)}
     >
-      <div className="relative h-64">
+      <div className="relative h-72 overflow-hidden">
         <img 
           src={product.images[0]} 
           alt={product.name} 
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
         />
         {discountPercentage > 0 && (
-          <span className="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+          <span className="absolute top-4 right-4 bg-destructive text-destructive-foreground text-xs font-bold px-3 py-1.5 rounded-full shadow-lg">
             {discountPercentage}% OFF
           </span>
         )}
       </div>
       
-      <div className="p-4">
-        <h3 className="font-serif text-xl font-semibold">{product.name}</h3>
-        <p className="text-gray-600 mb-2">{product.subtitle}</p>
-        <div className="flex items-baseline mb-4">
+      <div className="p-6">
+        <h3 className="font-serif text-2xl font-semibold mb-2 group-hover:text-primary transition-colors">{product.name}</h3>
+        <p className="text-muted-foreground mb-4 leading-relaxed">{product.subtitle}</p>
+        <div className="flex items-baseline mb-6">
           {product.discountPrice ? (
             <>
-              <span className="text-xl font-bold">₹{product.discountPrice.toFixed(2)}</span>
-              <span className="text-sm text-gray-500 line-through ml-2">₹{product.price.toFixed(2)}</span>
+              <span className="text-2xl font-bold text-primary">₹{product.discountPrice.toFixed(2)}</span>
+              <span className="text-sm text-muted-foreground line-through ml-2">₹{product.price.toFixed(2)}</span>
             </>
           ) : (
-            <span className="text-xl font-bold">₹{product.price.toFixed(2)}</span>
+            <span className="text-2xl font-bold text-primary">₹{product.price.toFixed(2)}</span>
           )}
         </div>
         
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-2 gap-3">
           <Button 
-            className="bg-white border border-black text-black hover:bg-gray-100 py-2 rounded font-medium flex items-center justify-center"
+            variant="outline"
+            className="py-2.5 rounded-lg font-medium hover:bg-primary hover:text-primary-foreground transition-all"
             onClick={handleAddToCart}
             disabled={isAddingToCart}
           >
@@ -127,13 +128,13 @@ const ProductCard = ({ product, onSelectProduct }: ProductCardProps) => {
               <span className="animate-pulse">Adding...</span>
             ) : (
               <>
-                <ShoppingCart className="mr-2 h-4 w-4" /> Add to Cart
+                <ShoppingCart className="mr-2 h-4 w-4" /> Add
               </>
             )}
           </Button>
           
           <Button 
-            className="bg-black text-white py-2 rounded font-medium hover:bg-black/80 flex items-center justify-center"
+            className="py-2.5 rounded-lg font-medium shadow-sm hover:shadow-md transition-all"
             onClick={handleBuyNow}
             disabled={isAddingToCart}
           >

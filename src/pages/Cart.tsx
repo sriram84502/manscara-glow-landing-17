@@ -10,7 +10,6 @@ import { useToast } from "@/hooks/use-toast";
 import { validateCoupon, calculateDiscount } from "@/utils/couponUtils";
 import { Coupon } from "@/types/checkout";
 import { Skeleton } from "@/components/ui/skeleton";
-import authService from "@/services/authService";
 
 const Cart = () => {
   const { items, updateQuantity, clearCart, removeItem, isLoading } = useCart();
@@ -20,7 +19,6 @@ const Cart = () => {
   const [processingItem, setProcessingItem] = useState<string | null>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
-  const isAuthenticated = authService.isAuthenticated();
 
   // Make sure items exists before trying to reduce it
   const cartTotal = items && items.length > 0 
@@ -174,16 +172,6 @@ const Cart = () => {
   };
 
   const handleCheckout = () => {
-    if (!isAuthenticated) {
-      toast({
-        title: "Authentication Required",
-        description: "Please sign in to proceed to checkout.",
-        variant: "destructive"
-      });
-      navigate("/auth/login?redirect=/checkout");
-      return;
-    }
-    
     // Store coupon data for checkout if there's an applied coupon
     if (appliedCoupon) {
       const checkoutData = {
@@ -239,48 +227,6 @@ const Cart = () => {
                   <Skeleton className="h-10 w-full mt-4" />
                 </div>
               </Card>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // Make sure items exists and has length before showing cart contents
-  if (!isAuthenticated) {
-    return (
-      <div className="container mx-auto py-16 px-4">
-        <div className="max-w-2xl mx-auto text-center">
-          <h1 className="text-2xl font-bold mb-6">Your Shopping Cart</h1>
-          <div className="bg-white p-8 rounded-lg shadow-md mb-6">
-            <svg 
-              className="w-24 h-24 mx-auto mb-4 text-gray-300" 
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
-            >
-              <path 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                strokeWidth={1.5} 
-                d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" 
-              />
-            </svg>
-            <h2 className="text-xl font-medium mb-2">Please Sign In</h2>
-            <p className="text-gray-500 mb-6">You need to be signed in to view your cart and make purchases.</p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link 
-                to="/auth/login?redirect=/cart" 
-                className="inline-flex items-center justify-center px-6 py-3 bg-black text-white rounded-md hover:bg-black/80 transition-colors"
-              >
-                Sign In
-              </Link>
-              <Link 
-                to="/" 
-                className="inline-flex items-center justify-center px-6 py-3 bg-white text-black border border-gray-200 rounded-md hover:bg-gray-50 transition-colors"
-              >
-                <ArrowLeft className="mr-2 h-5 w-5" /> Continue Shopping
-              </Link>
             </div>
           </div>
         </div>

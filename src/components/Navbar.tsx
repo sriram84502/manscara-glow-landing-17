@@ -136,10 +136,6 @@ const Navbar = () => {
             </Link>
           )}
 
-          {/* Guest Mode Indicator */}
-          <div className="hidden md:flex items-center space-x-2 text-sm text-gray-600">
-            <span>Guest Mode</span>
-          </div>
 
           {/* Mobile menu button */}
           <Button
@@ -197,9 +193,6 @@ const Navbar = () => {
             >
               <span>Testimonials</span>
             </a>
-            <div className="py-3 px-4 text-sm text-gray-600 border-t">
-              Guest Mode
-            </div>
           </nav>
         </div>
       )}

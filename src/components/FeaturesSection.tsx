@@ -38,24 +38,24 @@ const FeaturesSection = ({ className = "" }) => {
   return (
     <section id="features-section" className={`section-padding ${className}`}>
       <div className="container">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+        <div className="text-center mb-16 max-w-3xl mx-auto">
+          <h2 className="text-4xl md:text-5xl font-serif font-bold mb-6">
             Premium Features for Premium Men
           </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-muted-foreground text-lg">
             Manscara was developed to address the unique needs of men's skin, providing benefits that regular face washes simply can't match.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {features.map((feature) => (
-            <Card key={feature.id} className="hover-scale bg-white">
-              <CardHeader>
-                <span className="text-4xl mb-4">{feature.icon}</span>
-                <CardTitle>{feature.title}</CardTitle>
+            <Card key={feature.id} className="hover-lift bg-white border-border/50 shadow-sm hover:shadow-md transition-all">
+              <CardHeader className="pb-4">
+                <span className="text-5xl mb-4 block">{feature.icon}</span>
+                <CardTitle className="text-xl">{feature.title}</CardTitle>
               </CardHeader>
               <CardContent>
-                <CardDescription>{feature.description}</CardDescription>
+                <CardDescription className="text-base leading-relaxed">{feature.description}</CardDescription>
               </CardContent>
             </Card>
           ))}
